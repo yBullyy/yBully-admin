@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "ybullyy"
+  },
+  "targets": {
+    "ybullyy": {
+      "hosting": {
+        "ybully-admin-dashboard": [
+          "ybully-admin"
+        ]
+      }
+    }
+  }
+}
