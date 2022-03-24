@@ -1,25 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {Dropdown} from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
-import ChatList from './ChatList';
 import Aux from "../../../../../hoc/_Aux";
 import DEMO from "../../../../../store/constant";
 
 import Avatar1 from '../../../../../assets/images/user/avatar-1.jpg';
-import Avatar2 from '../../../../../assets/images/user/avatar-2.jpg';
-import Avatar3 from '../../../../../assets/images/user/avatar-3.jpg';
+// import Avatar2 from '../../../../../assets/images/user/avatar-2.jpg';
+// import Avatar3 from '../../../../../assets/images/user/avatar-3.jpg';
 import { useHistory } from 'react-router-dom';
 import { useUserAuth } from '../../../../../contexts/AuthContext';
 
 const NavRight = (props) => {
-    const [isListOpen, setIsListOpen] = useState(false);
     const { logout } = useUserAuth();
     const history = useHistory();
 
     const handleLogout = async () => {
         try {
             await logout();
+            localStorage.removeItem('user');
             toast.success('Logout Successful');
             history.push('/auth/login');
         } catch (error) {
@@ -31,7 +30,7 @@ const NavRight = (props) => {
         return (
             <Aux>
                 <ul className="navbar-nav ml-auto">
-                    <li>
+                    {/* <li>
                         <Dropdown alignRight={!props.rtlLayout}>
                             <Dropdown.Toggle variant={'link'} id="dropdown-basic">
                                 <i className="icon feather icon-bell"/>
@@ -87,10 +86,7 @@ const NavRight = (props) => {
                                 </div>
                             </Dropdown.Menu>
                         </Dropdown>
-                    </li>
-                    <li className={props.rtlLayout ? 'm-r-15' : 'm-l-15'}>
-                        <a href={DEMO.BLANK_LINK} className="displayChatbox" onClick={() => setIsListOpen(true)}><i className="icon feather icon-mail"/></a>
-                    </li>
+                    </li> */}
                     <li>
                         <Dropdown alignRight={!props.rtlLayout} className="drp-user">
                             <Dropdown.Toggle variant={'link'} id="dropdown-basic">
@@ -114,7 +110,6 @@ const NavRight = (props) => {
                         </Dropdown>
                     </li>
                 </ul>
-                <ChatList listOpen={isListOpen} closed={() => setIsListOpen(false)} />
             </Aux>
         );
 }
