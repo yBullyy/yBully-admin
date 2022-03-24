@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import NavLeft from "./NavLeft";
+// import NavLeft from "./NavLeft";
 import NavRight from "./NavRight";
 import Aux from "../../../../hoc/_Aux";
 import DEMO from "../../../../store/constant";
@@ -36,7 +36,7 @@ class NavBar extends Component {
                     </div>
                     <a className="mobile-menu" id="mobile-header" href={DEMO.BLANK_LINK}><i className="feather icon-more-horizontal"/></a>
                     <div className="collapse navbar-collapse">
-                        <NavLeft/>
+                        {/* <NavLeft/> */}
                         <NavRight rtlLayout={this.props.rtlLayout} />
                     </div>
                 </header>

@@ -21,7 +21,8 @@ const SignIn = () => {
         console.log('Login Clicked');
         setIsLoading(true);
         try {
-            await login(email, password);
+            let user = await login(email, password);
+            localStorage.setItem('user', JSON.stringify(user.user));
             setIsLoading(false);
             toast.success('Login Successful');
             history.push('/dashboard');

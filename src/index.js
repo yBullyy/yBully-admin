@@ -11,6 +11,7 @@ import reducer from './store/reducer';
 import config from './config';
 import { AuthContextProvider } from './contexts/AuthContext';
 import 'react-toastify/dist/ReactToastify.css';
+import './assets/scss/index.css';
 
 const store = createStore(reducer);
 

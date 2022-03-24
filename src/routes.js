@@ -6,6 +6,9 @@ window.$ = $;
 global.jQuery = $;
 
 const Dashboard = React.lazy(() => import('./pages/Dashboard/Dashboard'));
+const Admins = React.lazy(() => import('./pages/Admins/Admins'));
+const Users = React.lazy(() => import('./pages/Users/Users'));
+
 
 const UIBasicButton = React.lazy(() => import('./Demo/UIElements/Basic/Button'));
 const UIBasicBadges = React.lazy(() => import('./Demo/UIElements/Basic/Badges'));
@@ -27,7 +30,9 @@ const OtherSamplePage = React.lazy(() => import('./Demo/Other/SamplePage'));
 const OtherDocs = React.lazy(() => import('./Demo/Other/Docs'));
 
 const routes = [
-    { path: '/dashboard', exact: true, name: 'Default', component: Dashboard, isPrivate: true },
+    { path: '/dashboard', exact: true, name: 'Dashboard', component: Dashboard, isPrivate: true },
+    { path: '/admins', exact: true, name: 'Admins', component: Admins, isPrivate: true },
+    { path: '/users', exact: true, name: 'Users', component: Users, isPrivate: true },
 
 
     
