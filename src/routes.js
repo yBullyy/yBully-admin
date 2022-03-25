@@ -8,6 +8,7 @@ global.jQuery = $;
 const Dashboard = React.lazy(() => import('./pages/Dashboard/Dashboard'));
 const Admins = React.lazy(() => import('./pages/Admins/Admins'));
 const Users = React.lazy(() => import('./pages/Users/Users'));
+const Models = React.lazy(() => import('./pages/Models/Models'));
 
 
 const UIBasicButton = React.lazy(() => import('./Demo/UIElements/Basic/Button'));
@@ -33,6 +34,7 @@ const routes = [
     { path: '/dashboard', exact: true, name: 'Dashboard', component: Dashboard, isPrivate: true },
     { path: '/admins', exact: true, name: 'Admins', component: Admins, isPrivate: true },
     { path: '/users', exact: true, name: 'Users', component: Users, isPrivate: true },
+    { path: '/models', exact: true, name: 'Models', component: Models, isPrivate: true },
 
 
     

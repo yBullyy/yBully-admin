@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Card } from 'react-bootstrap';
+import { Row, Col, Card, Button } from 'react-bootstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
@@ -48,8 +48,15 @@ const Admins = () => {
             <Row>
                 <Col>
                     <Card>
-                        <Card.Header>
-                            <Card.Title as="h5">All Admins</Card.Title>
+                        <Card.Header style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <Card.Title as="h5">
+                                All Admins
+                            </Card.Title>
+                            <Card.Subtitle>
+                                <Button variant='primary' >
+                                    <i className="feather icon-plus"/>Add Admin
+                                </Button>
+                            </Card.Subtitle>
                         </Card.Header>
                         <Card.Body>
                             <ToolkitProvider
