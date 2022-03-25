@@ -5,11 +5,8 @@ import ReactLoading from 'react-loading';
 import CountUp from 'react-countup';
 
 import Aux from "../../hoc/_Aux";
-import DEMO from "../../store/constant";
 
 import avatar1 from '../../assets/images/user/avatar-1.jpg';
-import avatar2 from '../../assets/images/user/avatar-2.jpg';
-import avatar3 from '../../assets/images/user/avatar-3.jpg';
 import LineChart from '../../components/Charts/Nvd3Chart/LineChart';
 import PieBasicChart from '../../components/Charts/Nvd3Chart/PieBasicChart';
 import MultiBarChart from '../../components/Charts/Nvd3Chart/MultiBarChart';
@@ -25,7 +22,7 @@ const Dashboard = () => {
         let newStats = {};
         value && value.docs.forEach(doc => {
             newStats[doc.id] = doc.data();
-            let progress = doc.data().count / doc.data().target * 100;            
+            let progress = doc.data().count / doc.data().target * 100;
             newStats[doc.id]['progress'] = Math.round(progress);
         });
         setStats(newStats);
@@ -38,9 +35,9 @@ const Dashboard = () => {
 
     return (
         isLoading()
-            ? 
+            ?
             <div style={{ display: 'flex', justifyContent: 'center' }} >
-                <ReactLoading color='#3f4d67' type='spinningBubbles' height={100} width={100} /> 
+                <ReactLoading color='#3f4d67' type='spinningBubbles' height={100} width={100} />
             </div>
             : <Aux>
                 <Row>
@@ -108,7 +105,7 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                                 <div className="progress m-t-30" style={{ height: '7px' }}>
-                                    <div className="progress-bar progress-c-theme" role="progressbar" style={{ width: `${stats.total_users.progress}%`}} aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" />
+                                    <div className="progress-bar progress-c-theme" role="progressbar" style={{ width: `${stats.total_users.progress}%` }} aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" />
                                 </div>
                             </Card.Body>
                         </Card>
@@ -174,66 +171,42 @@ const Dashboard = () => {
                     <Col md={6} >
                         <Card className='Recent-Users'>
                             <Card.Header>
-                                <Card.Title as='h5'>Trusted Users</Card.Title>
+                                <Card.Title as='h5'>Top 5 Trusted Users</Card.Title>
                             </Card.Header>
                             <Card.Body className='px-0 py-2'>
                                 <Table responsive hover>
+                                    <thead>
+                                        <tr>
+                                            <th className='text-center'>#</th>
+                                            <th>User</th>
+                                            <th>Trust Score</th>
+                                            <th>Approved Tweets</th>
+                                        </tr>
+                                    </thead>
+
                                     <tbody>
-                                        <tr className="unread">
-                                            <td><img className="rounded-circle" style={{ width: '40px' }} src={avatar1} alt="activity-user" /></td>
-                                            <td>
-                                                <h6 className="mb-1">Isabella Christensen</h6>
-                                                <p className="m-0">Lorem Ipsum is simply dummy text of…</p>
-                                            </td>
-                                            <td>
-                                                <h6 className="text-muted"><i className="fa fa-circle text-c-green f-10 m-r-15" />11 MAY 12:56</h6>
-                                            </td>
-                                            <td><a href={DEMO.BLANK_LINK} className="label theme-bg2 text-white f-12">Reject</a><a href={DEMO.BLANK_LINK} className="label theme-bg text-white f-12">Approve</a></td>
-                                        </tr>
-                                        <tr className="unread">
-                                            <td><img className="rounded-circle" style={{ width: '40px' }} src={avatar2} alt="activity-user" /></td>
-                                            <td>
-                                                <h6 className="mb-1">Mathilde Andersen</h6>
-                                                <p className="m-0">Lorem Ipsum is simply dummy text of…</p>
-                                            </td>
-                                            <td>
-                                                <h6 className="text-muted"><i className="fa fa-circle text-c-red f-10 m-r-15" />11 MAY 10:35</h6>
-                                            </td>
-                                            <td><a href={DEMO.BLANK_LINK} className="label theme-bg2 text-white f-12">Reject</a><a href={DEMO.BLANK_LINK} className="label theme-bg text-white f-12">Approve</a></td>
-                                        </tr>
-                                        <tr className="unread">
-                                            <td><img className="rounded-circle" style={{ width: '40px' }} src={avatar3} alt="activity-user" /></td>
-                                            <td>
-                                                <h6 className="mb-1">Karla Sorensen</h6>
-                                                <p className="m-0">Lorem Ipsum is simply dummy text of…</p>
-                                            </td>
-                                            <td>
-                                                <h6 className="text-muted"><i className="fa fa-circle text-c-green f-10 m-r-15" />9 MAY 17:38</h6>
-                                            </td>
-                                            <td><a href={DEMO.BLANK_LINK} className="label theme-bg2 text-white f-12">Reject</a><a href={DEMO.BLANK_LINK} className="label theme-bg text-white f-12">Approve</a></td>
-                                        </tr>
-                                        <tr className="unread">
-                                            <td><img className="rounded-circle" style={{ width: '40px' }} src={avatar1} alt="activity-user" /></td>
-                                            <td>
-                                                <h6 className="mb-1">Ida Jorgensen</h6>
-                                                <p className="m-0">Lorem Ipsum is simply dummy text of…</p>
-                                            </td>
-                                            <td>
-                                                <h6 className="text-muted f-w-300"><i className="fa fa-circle text-c-red f-10 m-r-15" />19 MAY 12:56</h6>
-                                            </td>
-                                            <td><a href={DEMO.BLANK_LINK} className="label theme-bg2 text-white f-12">Reject</a><a href={DEMO.BLANK_LINK} className="label theme-bg text-white f-12">Approve</a></td>
-                                        </tr>
-                                        <tr className="unread">
-                                            <td><img className="rounded-circle" style={{ width: '40px' }} src={avatar2} alt="activity-user" /></td>
-                                            <td>
-                                                <h6 className="mb-1">Albert Andersen</h6>
-                                                <p className="m-0">Lorem Ipsum is simply dummy text of…</p>
-                                            </td>
-                                            <td>
-                                                <h6 className="text-muted"><i className="fa fa-circle text-c-green f-10 m-r-15" />21 July 12:56</h6>
-                                            </td>
-                                            <td><a href={DEMO.BLANK_LINK} className="label theme-bg2 text-white f-12">Reject</a><a href={DEMO.BLANK_LINK} className="label theme-bg text-white f-12">Approve</a></td>
-                                        </tr>
+
+                                        {
+                                            Array(5).fill(0).map((_, index) =>
+                                                <tr className="unread">
+                                                    <td><img className="rounded-circle" style={{ width: '40px' }} src={avatar1} alt="activity-user" /></td>
+                                                    <td>
+                                                        <h6 className="mb-1">User Name</h6>
+                                                        <p className="m-0">useremail@gmail.com</p>
+                                                    </td>
+                                                    <td>
+                                                        <h6 className="text-muted">
+                                                            66%
+                                                        </h6>
+                                                    </td>
+                                                    <td>
+                                                        <h6 className="text-muted">
+                                                            200
+                                                        </h6>
+                                                    </td>
+                                                    {/* <td><a href={DEMO.BLANK_LINK} className="label theme-bg2 text-white f-12">Reject</a><a href={DEMO.BLANK_LINK} className="label theme-bg text-white f-12">Approve</a></td> */}
+                                                </tr>
+                                            )}
                                     </tbody>
                                 </Table>
                             </Card.Body>

@@ -1,36 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 
 import Aux from "../../hoc/_Aux";
+import EditModal from './EditModal';
+
+const { SearchBar } = Search;
 
 const colums = [
     {
         dataField: 'id',
-        text: 'Product ID'
+        text: 'S.N.',
     },
     {
         dataField: 'name',
-        text: 'Product Name'
-    }
-];
-const rows = [
-    { id: '1', name: 'Book 1' },
-    { id: '2', name: 'Book 2' },
-    { id: '3', name: 'Book 3' },
-    { id: '4', name: 'Book 4' },
-    { id: '5', name: 'Book 5' },
-    { id: '6', name: 'Book 5' },
-    { id: '7', name: 'Book 5' },
-    { id: '8', name: 'Book 5' },
-    { id: '9', name: 'Book 5' },
-    { id: '10', name: 'Book 5' },
-    { id: '11', name: 'Book 5' },
-    { id: '12', name: 'Book 6' }
+        text: 'Name'
+    },
+    {
+        dataField: 'email',
+        text: 'Email'
+    },
+    {
+        dataField: 'trustscore',
+        text: 'Trust Score'
+    },
+    {
+        dataField: 'role',
+        text: 'Role'
+    },
+    {
+        dataField: 'edit',
+        text: 'Edit'
+    },
 ];
 
 const Users = () => {
+    const [showEditModal, setShowEditModal] = useState(false);
+
+    const handleCloseEditModal = () => setShowEditModal(false);
+    const handleShowEditModal = () => setShowEditModal(true);
+
+
+    const editIcon = <div style={{ textAlign: 'center', cursor: 'pointer' }} onClick={handleShowEditModal} ><i className="feather icon-edit" /></div>;
+    const rows = [
+        { id: '1', name: 'shubh', email: 'email@abc.com', role: 'admin', trustscore: '100%', edit: editIcon },
+        { id: '2', name: 'shubh', email: 'email@abc.com', role: 'admin', trustscore: '100%', edit: editIcon },
+        { id: '3', name: 'shubh', email: 'email@abc.com', role: 'admin', trustscore: '100%', edit: editIcon },
+        { id: '4', name: 'shubh', email: 'email@abc.com', role: 'admin', trustscore: '100%', edit: editIcon },
+        { id: '5', name: 'shubh', email: 'email@abc.com', role: 'admin', trustscore: '100%', edit: editIcon },
+        { id: '6', name: 'shubh', email: 'email@abc.com', role: 'admin', trustscore: '100%', edit: editIcon },
+        { id: '7', name: 'shubh', email: 'email@abc.com', role: 'admin', trustscore: '100%', edit: editIcon },
+        { id: '8', name: 'shubh', email: 'email@abc.com', role: 'admin', trustscore: '100%', edit: editIcon },
+        { id: '9', name: 'shubh', email: 'email@abc.com', role: 'admin', trustscore: '100%', edit: editIcon },
+        { id: '10', name: 'shubh', email: 'email@abc.com', role: 'admin', trustscore: '100%', edit: editIcon },
+    ];
+
     return (
         <Aux>
             <Row>
@@ -40,13 +66,27 @@ const Users = () => {
                             <Card.Title as="h5">All Users</Card.Title>
                         </Card.Header>
                         <Card.Body>
-                            <BootstrapTable
+                            <ToolkitProvider
                                 keyField='id'
                                 data={rows}
                                 columns={colums}
-                                pagination={paginationFactory({ sizePerPage: 7, hideSizePerPage: true, hidePageListOnlyOnePage: true })}
-                            />
+                                search
+                            >
+                                {
+                                    props => (
+                                        <div>
+                                            <SearchBar {...props.searchProps} />
+                                            <BootstrapTable
+                                                pagination={paginationFactory({ sizePerPage: 7, hideSizePerPage: true, hidePageListOnlyOnePage: true })}
+                                                {...props.baseProps}
+                                            />
+                                        </div>
+                                    )
+                                }
+
+                            </ToolkitProvider>
                         </Card.Body>
+                        <EditModal show={showEditModal} onHide={handleCloseEditModal} />
                     </Card>
                 </Col>
             </Row>

@@ -95,7 +95,7 @@ const NavRight = (props) => {
                             <Dropdown.Menu alignRight className="profile-notification">
                                 <div className="pro-head">
                                     <img src={Avatar1} className="img-radius" alt="User Profile"/>
-                                    <span>John Doe</span>
+                                    <span>Shubh Shah</span>
                                     <div onClick={handleLogout} className="dud-logout" title="Logout">
                                         <i className="feather icon-log-out"/>
                                     </div>
@@ -103,8 +103,6 @@ const NavRight = (props) => {
                                 <ul className="pro-body">
                                     <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-settings"/> Settings</a></li>
                                     <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-user"/> Profile</a></li>
-                                    <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-mail"/> My Messages</a></li>
-                                    <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-lock"/> Lock Screen</a></li>
                                 </ul>
                             </Dropdown.Menu>
                         </Dropdown>

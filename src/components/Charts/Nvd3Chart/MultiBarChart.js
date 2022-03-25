@@ -5,50 +5,38 @@ function generateNumber(min, max) {
     return Math.floor(Math.random()*(max-min+1)+min)
 }
 
-function getDatum() {
-    let sin = [],
-        sin2 = [],
-        sin3 = [];
+function getData() {
+    let bully_predictions = [],
+        nobully_predictions = [];
 
     const len =  35 + (Math.random() * (70-35));
     for (let i = 0; i < len; i++) {
-        sin.push({
+        bully_predictions.push({
             'x': i,
             'y': generateNumber(0, 60)
         });
-        sin2.push({
+        nobully_predictions.push({
             'x': i,
             'y': generateNumber(0, 100)
-        });
-        sin3.push({
-            'x': i,
-            'y': generateNumber(0, 30)
         });
     }
     return [
         {
-            values: sin,
-            key: 'Stream #0',
+            values: bully_predictions,
+            key: 'Bully',
             color: '#A389D4'
         },
         {
-            values: sin3,
-            key: 'Stream #1',
+            values: nobully_predictions,
+            key: 'No Bully',
             color: '#04a9f5'
-        },
-        {
-            values: sin2,
-            key: 'Stream #3',
-            color: '#1de9b6',
-            area: true
         }
     ];
 }
 
 class MultiBarChart extends React.Component {
-
     render() {
-        const data = getDatum();
+        const data = getData();
         return <NVD3Chart type="multiBarChart" datum={data} x="x" y="y" height={300} showValues groupSpacing={0.2} />
     }
 }
