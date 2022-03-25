@@ -7,6 +7,7 @@ import Aux from "../../../hoc/_Aux";
 import Breadcrumb from "../../../App/layout/AdminLayout/Breadcrumb";
 import { useUserAuth } from '../../../contexts/AuthContext';
 import { useHistory, NavLink } from 'react-router-dom';
+import { getUser } from '../../../helpers/auth';
 
 
 const SignIn = () => {
@@ -14,7 +15,7 @@ const SignIn = () => {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const { login } = useUserAuth();
+    const { login, logout } = useUserAuth();
     const history = useHistory();
 
     const handleLoginClick = async () => {
@@ -22,10 +23,21 @@ const SignIn = () => {
         setIsLoading(true);
         try {
             let user = await login(email, password);
-            localStorage.setItem('user', JSON.stringify(user.user));
+            let userDoc = await getUser(user.user.uid);
+            if (userDoc.exists()) {
+                if (userDoc.data().role === 'admin') {
+                    localStorage.setItem('user', JSON.stringify(user.user));
+                    toast.success('Login Successful');
+                    history.push('/dashboard');
+                } else {
+                    await logout();
+                    toast.error('You are not an admin !');
+                }
+            } else {
+                await logout();
+                toast.error('User does not exist !');
+            }
             setIsLoading(false);
-            toast.success('Login Successful');
-            history.push('/dashboard');
         } catch (error) {
             setIsLoading(false);
             toast.error(error.message);
