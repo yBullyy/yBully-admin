@@ -42,10 +42,10 @@ const Users = () => {
     const [usersValue] = useCollection(getOnlyUsers(), { snapshotListenOptions: { includeMetadataChanges: true } });
     const [showEditModal, setShowEditModal] = useState(false);
     const [usersData, setUsersData] = useState([]);
-    const [activeUser, setActiveUser] = useState(0);
+    const [activeUser] = useState(0);
 
     const handleCloseEditModal = () => setShowEditModal(false);
-    const handleShowEditModal = () => setShowEditModal(true);
+    // const handleShowEditModal = () => setShowEditModal(true);
 
     useEffect(() => {
         let newUsersData = [];
