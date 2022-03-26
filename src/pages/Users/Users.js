@@ -42,41 +42,36 @@ const Users = () => {
     const [usersValue] = useCollection(getOnlyUsers(), { snapshotListenOptions: { includeMetadataChanges: true } });
     const [showEditModal, setShowEditModal] = useState(false);
     const [usersData, setUsersData] = useState([]);
-    const [activeUser] = useState(0);
+    const [activeUser, setActiveUser] = useState(0);
 
     const handleCloseEditModal = () => setShowEditModal(false);
-    // const handleShowEditModal = () => setShowEditModal(true);
+    const handleShowEditModal = () => setShowEditModal(true);
 
     useEffect(() => {
         let newUsersData = [];
         usersValue && usersValue.docs.forEach((doc, index) => {
             const data = doc.data();
-            newUsersData.push({ 
+            newUsersData.push({
                 ...data,
                 id: index + 1,
-                name: data.name, 
+                name: data.name,
                 role: data.role,
-                // edit: editIcon(index),
-                edit: 'edit',
+                edit: <div
+                    style={{ textAlign: 'center', cursor: 'pointer' }}
+                    onClick={() => {
+                        setActiveUser(index);
+                        handleShowEditModal();
+                    }}
+                >
+                    <i className="feather icon-edit" />
+                </div>,
                 trustscore: data.trustScore,
-                email: data.email 
+                email: data.email
             });
         });
         setUsersData(newUsersData);
     }, [usersValue]);
 
-
-    // const editIcon = (userIndex) => {
-    //     return <div
-    //         style={{ textAlign: 'center', cursor: 'pointer' }}
-    //         onClick={() => {
-    //             setActiveUser(userIndex);
-    //             handleShowEditModal();
-    //         }}
-    //     >
-    //         <i className="feather icon-edit" />
-    //     </div>;
-    // }
 
     return (
         <Aux>
