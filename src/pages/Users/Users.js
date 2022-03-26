@@ -51,23 +51,32 @@ const Users = () => {
         let newUsersData = [];
         usersValue && usersValue.docs.forEach((doc, index) => {
             const data = doc.data();
-            newUsersData.push({ ...data, id: index + 1, name: data.name, role: data.role, edit: editIcon(index), trustscore: data.trustScore, email: data.email });
+            newUsersData.push({ 
+                ...data,
+                id: index + 1,
+                name: data.name, 
+                role: data.role,
+                // edit: editIcon(index),
+                edit: 'edit',
+                trustscore: data.trustScore,
+                email: data.email 
+            });
         });
         setUsersData(newUsersData);
     }, [usersValue]);
 
 
-    const editIcon = (userIndex) => {
-        return <div
-            style={{ textAlign: 'center', cursor: 'pointer' }}
-            onClick={() => {
-                setActiveUser(userIndex);
-                handleShowEditModal();
-            }}
-        >
-            <i className="feather icon-edit" />
-        </div>;
-    }
+    // const editIcon = (userIndex) => {
+    //     return <div
+    //         style={{ textAlign: 'center', cursor: 'pointer' }}
+    //         onClick={() => {
+    //             setActiveUser(userIndex);
+    //             handleShowEditModal();
+    //         }}
+    //     >
+    //         <i className="feather icon-edit" />
+    //     </div>;
+    // }
 
     return (
         <Aux>
