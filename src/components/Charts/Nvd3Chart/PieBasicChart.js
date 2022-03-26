@@ -1,16 +1,22 @@
 import React from 'react';
 import NVD3Chart from 'react-nvd3';
 
-const data = [
-    {key: "User", y: 29, color: "#ff8a65"},
-    {key: "Admin", y: 10, color: "#f4c22b"},
-    {key: "Trusted User", y: 32, color: "#04a9f5"}
-];
 
-class PieBasicChart extends React.Component {
-    render() {
-        return <NVD3Chart id="chart" height={300} type="pieChart" datum={data} x="key" y="y"  />
+const PieBasicChart = (props) => {
+    const getData = () => {
+        let data = {"user": 0, "admin": 0, "trustedUser": 0 };
+        props.data.forEach(e => {
+            data[e.role] += 1;
+        });
+        return [
+            {key: "User",y: data["user"]},
+            {key: "Admin",y: data["admin"]},
+            {key: "Trusted User",y: data["trustedUser"]}
+        ];
     }
+    const data = getData();
+    
+    return <NVD3Chart id="chart" height={300} type="pieChart" datum={data} x="key" y="y"  />
 }
 
 export default PieBasicChart;

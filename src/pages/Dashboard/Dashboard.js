@@ -10,27 +10,58 @@ import avatar1 from '../../assets/images/user/avatar-1.jpg';
 import LineChart from '../../components/Charts/Nvd3Chart/LineChart';
 import PieBasicChart from '../../components/Charts/Nvd3Chart/PieBasicChart';
 import MultiBarChart from '../../components/Charts/Nvd3Chart/MultiBarChart';
-import { getStats } from '../../helpers/firestore';
+import { getDailyScans, getStats, getTop5Users, getUsers } from '../../helpers/firestore';
 
 
 const Dashboard = () => {
-    const [value, statsLoading] = useCollection(getStats(), { snapshotListenOptions: { includeMetadataChanges: true } });
+    const [statsValue, statsLoading] = useCollection(getStats(), { snapshotListenOptions: { includeMetadataChanges: true } });
+    const [dailyScansValue, dailyScansLoading] = useCollection(getDailyScans(), { snapshotListenOptions: { includeMetadataChanges: true } });
+    const [usersValue, usersLoading] = useCollection(getUsers(), { snapshotListenOptions: { includeMetadataChanges: true } });
+    const [top5UsersValue, top5UsersLoading] = useCollection(getTop5Users(), { snapshotListenOptions: { includeMetadataChanges: true } });
 
     const [stats, setStats] = useState({});
+    const [dailyScansData, setDailyScansData] = useState([]);
+    const [users, setUsers] = useState([]);
+    const [top5Users, setTop5Users] = useState([]);
 
+    
     useEffect(() => {
         let newStats = {};
-        value && value.docs.forEach(doc => {
+        statsValue && statsValue.docs.forEach(doc => {
             newStats[doc.id] = doc.data();
             let progress = doc.data().count / doc.data().target * 100;
             newStats[doc.id]['progress'] = Math.round(progress);
         });
+
+        let newDailyScansData = [];
+        dailyScansValue && dailyScansValue.docs.forEach(doc => {
+            let data = doc.data();
+            newDailyScansData.push(data);
+        });
+
+        let newUsers = [];
+        usersValue && usersValue.docs.forEach(doc => {
+            let data = doc.data();
+            newUsers.push(data);
+        });
+
+        let newTop5Users = [];
+        top5UsersValue && top5UsersValue.docs.forEach(doc => {
+            let data = doc.data();
+            newTop5Users.push(data);
+        });
+
+        console.log(newTop5Users);
+
         setStats(newStats);
-        console.log(newStats);
-    }, [value]);
+        setDailyScansData(newDailyScansData);
+        setUsers(newUsers);
+        setTop5Users(newTop5Users);
+        
+    }, [statsValue, dailyScansValue, usersValue, top5UsersValue]);
 
     const isLoading = () => {
-        return statsLoading || Object.keys(stats).length === 0;
+        return statsLoading || dailyScansLoading || usersLoading || Object.keys(stats).length === 0;
     }
 
     return (
@@ -140,7 +171,7 @@ const Dashboard = () => {
                                 <Card.Title as="h5">Daily Scans</Card.Title>
                             </Card.Header>
                             <Card.Body>
-                                <LineChart />
+                                <LineChart data={dailyScansData} />
                             </Card.Body>
                         </Card>
                     </Col>
@@ -151,7 +182,7 @@ const Dashboard = () => {
                                 <Card.Title as="h5">Daily Predictions</Card.Title>
                             </Card.Header>
                             <Card.Body>
-                                <MultiBarChart />
+                                <MultiBarChart data={dailyScansData} />
                             </Card.Body>
                         </Card>
                     </Col>
@@ -163,7 +194,7 @@ const Dashboard = () => {
                                 <Card.Title as="h5">Total Users</Card.Title>
                             </Card.Header>
                             <Card.Body className="text-center">
-                                <PieBasicChart />
+                                <PieBasicChart data={users} />
                             </Card.Body>
                         </Card>
                     </Col>
@@ -187,21 +218,21 @@ const Dashboard = () => {
                                     <tbody>
 
                                         {
-                                            Array(5).fill(0).map((_, index) =>
-                                                <tr className="unread">
+                                            top5Users.map((user, index) =>
+                                                <tr className="unread" key={user.uid} >
                                                     <td><img className="rounded-circle" style={{ width: '40px' }} src={avatar1} alt="activity-user" /></td>
                                                     <td>
-                                                        <h6 className="mb-1">User Name</h6>
-                                                        <p className="m-0">useremail@gmail.com</p>
+                                                        <h6 className="mb-1">{user.name}</h6>
+                                                        <p className="m-0">{user.email}</p>
                                                     </td>
                                                     <td>
                                                         <h6 className="text-muted">
-                                                            66%
+                                                            {user.trustScore}%
                                                         </h6>
                                                     </td>
                                                     <td>
                                                         <h6 className="text-muted">
-                                                            200
+                                                            {user.totalApprovedTweets}
                                                         </h6>
                                                     </td>
                                                     {/* <td><a href={DEMO.BLANK_LINK} className="label theme-bg2 text-white f-12">Reject</a><a href={DEMO.BLANK_LINK} className="label theme-bg text-white f-12">Approve</a></td> */}
