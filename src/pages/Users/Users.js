@@ -1,10 +1,10 @@
-import React, { useState ,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { getOnlyUsers} from '../../helpers/firestore';
+import { getOnlyUsers } from '../../helpers/firestore';
 
 import Aux from "../../hoc/_Aux";
 import EditModal from './EditModal';
@@ -39,30 +39,35 @@ const colums = [
 ];
 
 const Users = () => {
-    const [usersValue, usersLoading] = useCollection(getOnlyUsers(), { snapshotListenOptions: { includeMetadataChanges: true } });
+    const [usersValue] = useCollection(getOnlyUsers(), { snapshotListenOptions: { includeMetadataChanges: true } });
     const [showEditModal, setShowEditModal] = useState(false);
-    const [usersData,setUsersData] = useState([]);
-    const [activeUser,setActiveUser] = useState(0);
+    const [usersData, setUsersData] = useState([]);
+    const [activeUser, setActiveUser] = useState(0);
 
     const handleCloseEditModal = () => setShowEditModal(false);
     const handleShowEditModal = () => setShowEditModal(true);
 
     useEffect(() => {
         let newUsersData = [];
-        usersValue && usersValue.docs.forEach((doc,index) => {
-                const data = doc.data();
-                newUsersData.push({...data,id:index+1,name:data.name,role:data.role,edit:editIcon(index),trustscore:data.trustScore,email:data.email});
+        usersValue && usersValue.docs.forEach((doc, index) => {
+            const data = doc.data();
+            newUsersData.push({ ...data, id: index + 1, name: data.name, role: data.role, edit: editIcon(index), trustscore: data.trustScore, email: data.email });
         });
         setUsersData(newUsersData);
-    },[usersValue]);
+    }, [usersValue]);
 
 
     const editIcon = (userIndex) => {
-        return <div style={{ textAlign: 'center', cursor: 'pointer' }} onClick={() => {
-            setActiveUser(userIndex);
-            handleShowEditModal();
-        }} ><i className="feather icon-edit" /></div>;
-    } 
+        return <div
+            style={{ textAlign: 'center', cursor: 'pointer' }}
+            onClick={() => {
+                setActiveUser(userIndex);
+                handleShowEditModal();
+            }}
+        >
+            <i className="feather icon-edit" />
+        </div>;
+    }
 
     return (
         <Aux>

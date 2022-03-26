@@ -1,4 +1,4 @@
-import { collection, query, where, orderBy, getDocs, limit, setDoc, doc, updateDoc } from 'firebase/firestore';
+import { collection, query, where, orderBy, limit, setDoc, doc, updateDoc } from 'firebase/firestore';
 import { firestore } from './firebase';
 
 export const getStats = () => {

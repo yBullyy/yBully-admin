@@ -41,7 +41,7 @@ const colums = [
 
 const Admins = () => {
 
-    const [adminsValue, adminsLoading] = useCollection(getAdmins(), { snapshotListenOptions: { includeMetadataChanges: true } });
+    const [adminsValue] = useCollection(getAdmins(), { snapshotListenOptions: { includeMetadataChanges: true } });
 
     const [admins, setAdmins] = useState([]);
     const [showEditModal, setShowEditModal] = useState(false);

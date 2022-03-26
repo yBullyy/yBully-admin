@@ -61,7 +61,7 @@ const Dashboard = () => {
     }, [statsValue, dailyScansValue, usersValue, top5UsersValue]);
 
     const isLoading = () => {
-        return statsLoading || dailyScansLoading || usersLoading || Object.keys(stats).length === 0;
+        return statsLoading || dailyScansLoading || usersLoading || top5UsersLoading || Object.keys(stats).length === 0;
     }
 
     return (
