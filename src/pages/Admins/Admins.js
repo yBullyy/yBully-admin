@@ -1,44 +1,64 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Button } from 'react-bootstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { getAdmins } from '../../helpers/firestore';
 
 import Aux from "../../hoc/_Aux";
+import AddAdminModal from './AddAdminModal';
 
 const { SearchBar } = Search;
 
 const colums = [
+    // {
+    //     dataField: 'id',
+    //     text: 'Product ID',
+    //     Cell: row => (
+    //         <div>
+    //             <span title={row.value}>{row.value}</span>
+    //         </div>
+    //     )
+    // },
     {
         dataField: 'id',
-        text: 'Product ID',
-        Cell: row => (
-            <div>
-                <span title={row.value}>{row.value}</span>
-            </div>
-        )
+        text: 'S.N.',
     },
     {
         dataField: 'name',
-        text: 'Product Name'
+        text: 'Name'
+    },
+    {
+        dataField: 'email',
+        text: 'Email'
+    },
+    {
+        dataField: 'role',
+        text: 'Role'
     }
-];
-const rows = [
-    { id: '1', name: 'Book 1' },
-    { id: '2', name: 'Book 2' },
-    { id: '3', name: 'Book 3' },
-    { id: '4', name: 'Book 4' },
-    { id: '5', name: 'Book 5' },
-    { id: '6', name: 'Book 5' },
-    { id: '7', name: 'Book 5' },
-    { id: '8', name: 'Book 5' },
-    { id: '9', name: 'Book 5' },
-    { id: '10', name: 'Book 5' },
-    { id: '11', name: 'Book 5' },
-    { id: '12', name: 'Book 6' }
 ];
 
 const Admins = () => {
+
+    const [adminsValue, adminsLoading] = useCollection(getAdmins(), { snapshotListenOptions: { includeMetadataChanges: true } });
+
+    const [admins, setAdmins] = useState([]);
+    const [showEditModal, setShowEditModal] = useState(false);
+
+    const handleCloseEditModal = () => setShowEditModal(false);
+    const handleShowEditModal = () => setShowEditModal(true);
+
+    useEffect(() => {
+        let newAdmins = [];
+        adminsValue && adminsValue.docs.forEach((doc, index) => {
+            const data = doc.data();
+            newAdmins.push({ id: index + 1, name: data.name, email: data.email, role: data.role });
+
+            setAdmins(newAdmins);
+        });
+    }, [adminsValue]);
+
     const afterSearch = (newResult) => {
         console.log(newResult);
     };
@@ -53,7 +73,7 @@ const Admins = () => {
                                 All Admins
                             </Card.Title>
                             <Card.Subtitle>
-                                <Button variant='primary' >
+                                <Button variant='primary' onClick={handleShowEditModal} >
                                     <i className="feather icon-plus"/>Add Admin
                                 </Button>
                             </Card.Subtitle>
@@ -61,7 +81,7 @@ const Admins = () => {
                         <Card.Body>
                             <ToolkitProvider
                                 keyField='id'
-                                data={rows}
+                                data={admins}
                                 columns={colums}
                                 search={{afterSearch}}
                             >
@@ -85,6 +105,7 @@ const Admins = () => {
                                 pagination={paginationFactory({ sizePerPage: 7, hideSizePerPage: true, hidePageListOnlyOnePage: true })}
                             /> */}
                         </Card.Body>
+                        <AddAdminModal show={showEditModal} onHide={handleCloseEditModal} />
                     </Card>
                 </Col>
             </Row>
