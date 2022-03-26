@@ -1,12 +1,14 @@
 import React,{useEffect, useState} from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import {Col,Form,Row} from "react-bootstrap";
+import { Modal, Button, Col, Form, Row } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import ReactLoading from 'react-loading';
+
 import { updateUser } from '../../helpers/firestore';
 
 const EditModal = ({ show, onHide,users,activeUser}) => {
     const user = users[activeUser];
     const [role, setRole] = useState(user && user.role);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if(user){
@@ -22,13 +24,14 @@ const EditModal = ({ show, onHide,users,activeUser}) => {
     };
 
     const onUpdateUser = async () => {
-        console.log("onUpdateUser => ",user,role);
+        setIsLoading(true);
         try {
             await updateUser(user.uid, { role });
             toast.success('User updated successfully');
         } catch (error) {
             toast.error(error.message);
         }
+        setIsLoading(false);
         onHide();
     }
     return (
@@ -83,7 +86,13 @@ const EditModal = ({ show, onHide,users,activeUser}) => {
                     Close
                 </Button>
                 <Button variant="primary" onClick={onUpdateUser}>
-                    Update User
+                    {
+                        isLoading 
+                        ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
+                            <ReactLoading type="spinningBubbles" color="#fff" height={20} width={20} />
+                        </div>
+                        : "Update User"
+                    }
                 </Button>
             </Modal.Footer>
         </Modal>
