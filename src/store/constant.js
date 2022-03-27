@@ -1,5 +1,5 @@
 const DEMO = {
-    BLANK_LINK: "#!",
+    BLANK_LINK: "#",
 };
 
 export default DEMO;

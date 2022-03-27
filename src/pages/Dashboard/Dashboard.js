@@ -51,8 +51,6 @@ const Dashboard = () => {
             newTop5Users.push(data);
         });
 
-        console.log(newTop5Users);
-
         setStats(newStats);
         setDailyScansData(newDailyScansData);
         setUsers(newUsers);

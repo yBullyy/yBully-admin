@@ -36,7 +36,7 @@ const Models = () => {
             </Card>
             <Card>
                 <Card.Body>
-                    <Card.Title>Model 2</Card.Title>
+                    <Card.Title>Model 3</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">Accuracy: 94%</Card.Subtitle>
                     <Card.Text>
                         <p>Trained on: 23 / 10 / 2022</p>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Dropdown} from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
@@ -10,10 +10,25 @@ import Avatar1 from '../../../../../assets/images/user/avatar-1.jpg';
 // import Avatar3 from '../../../../../assets/images/user/avatar-3.jpg';
 import { useHistory } from 'react-router-dom';
 import { useUserAuth } from '../../../../../contexts/AuthContext';
+import { getUser } from '../../../../../helpers/auth';
 
 const NavRight = (props) => {
     const { logout } = useUserAuth();
     const history = useHistory();
+    const [user, setUser] = useState(null);
+    
+    useEffect(() => {
+        const getCurrUser = async () => {
+            let user = JSON.parse(localStorage.getItem('user'));
+            if (user) {
+                let userDoc = await getUser(user.uid);
+                if (userDoc.exists()) {
+                    setUser(userDoc.data());
+                }
+            }
+        }
+        getCurrUser();
+    }, []);
 
     const handleLogout = async () => {
         try {
@@ -95,14 +110,14 @@ const NavRight = (props) => {
                             <Dropdown.Menu alignRight className="profile-notification">
                                 <div className="pro-head">
                                     <img src={Avatar1} className="img-radius" alt="User Profile"/>
-                                    <span>Shubh Shah</span>
+                                    <span>{ user && user.name }</span>
                                     <div onClick={handleLogout} className="dud-logout" title="Logout">
                                         <i className="feather icon-log-out"/>
                                     </div>
                                 </div>
                                 <ul className="pro-body">
-                                    <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-settings"/> Settings</a></li>
                                     <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-user"/> Profile</a></li>
+                                    <li onClick={handleLogout} ><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-log-out"/> Logout</a></li>
                                 </ul>
                             </Dropdown.Menu>
                         </Dropdown>
