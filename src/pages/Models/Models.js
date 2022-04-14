@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Button } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import Aux from "../../hoc/_Aux";
 
 const Models = () => {
@@ -10,14 +10,15 @@ const Models = () => {
                     <Card.Title>Model 1</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">Accuracy: 90%</Card.Subtitle>
                     <Card.Text>
-                        <p>Trained on: 25 / 10 / 2022</p>
+                        Trained on: 25 / 10 / 2022
+                        <br />
                         <i className="fa fa-circle text-c-green f-10 m-r-15"/> Active
                     </Card.Text>
                     {/* <Card.Link href="#">Card Link</Card.Link> */}
                     {/* <Card.Link href="#">Another Link</Card.Link> */}
                 </Card.Body>
             </Card>
-            <Card>
+            {/* <Card>
                 <Card.Body>
                     <Card.Title>Model 2</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">Accuracy: 94%</Card.Subtitle>
@@ -50,7 +51,7 @@ const Models = () => {
                         </div>
                     </Card.Text>
                 </Card.Body>
-            </Card>
+            </Card> */}
             
         </Aux>
     );

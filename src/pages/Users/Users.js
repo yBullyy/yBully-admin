@@ -65,9 +65,12 @@ const Users = () => {
                 >
                     <i className="feather icon-edit" />
                 </div>,
-                trustscore: data.trustScore,
+                trustscore: parseInt(data.trustScore * 100),
                 email: data.email
             });
+            
+
+
         });
         setUsersData(newUsersData);
     }, [usersValue]);
