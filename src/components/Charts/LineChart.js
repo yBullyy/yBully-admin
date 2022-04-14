@@ -1,6 +1,6 @@
 import React from 'react';
 import NVD3Chart from 'react-nvd3';
-import { getFormattedDate } from '../../../utils/dateUtil';
+import { getFormattedDate } from '../../utils/dateUtil';
 
 
 const LineChart = ({ getData, xAxisLabel, yAxisLabel }) => {

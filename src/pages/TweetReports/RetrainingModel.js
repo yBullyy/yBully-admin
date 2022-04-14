@@ -141,7 +141,7 @@ const RetrainingModel = () => {
                     <Card>
                         <Card.Header style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Card.Title as="h5">
-                                Approved Tweets For Retraining
+                                Approved Tweets For Retraining ({approvedReports.length})
                             </Card.Title>
                         </Card.Header>
                         <Card.Body>

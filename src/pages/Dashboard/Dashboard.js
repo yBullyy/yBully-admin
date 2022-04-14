@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Table } from 'react-bootstrap';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import ReactLoading from 'react-loading';
-import CountUp from 'react-countup';
 
 import Aux from "../../hoc/_Aux";
 
 import avatar1 from '../../assets/images/user/avatar-1.jpg';
-import LineChart from '../../components/Charts/Nvd3Chart/LineChart';
-import PieBasicChart from '../../components/Charts/Nvd3Chart/PieBasicChart';
-import MultiBarChart from '../../components/Charts/Nvd3Chart/MultiBarChart';
+import LineChart from '../../components/Charts/LineChart';
+import PieBasicChart from '../../components/Charts/PieBasicChart';
+import MultiBarChart from '../../components/Charts/MultiBarChart';
+import StatsContainer from '../../components/StatsContainer';
 import { getDailyReports, getDailyScans, getStats, getTop5Users, getUsers } from '../../helpers/firestore';
 
 
@@ -113,98 +113,28 @@ const Dashboard = () => {
             </div>
             : <Aux>
                 <Row>
-                    <Col md={6} xl={3}>
-                        <Card>
-                            <Card.Body>
-                                <h6 className='mb-4'>Total Predictions</h6>
-                                <div className="row d-flex align-items-center">
-                                    <div className="col-9">
-                                        <h3 className="f-w-300 d-flex align-items-center m-b-0">
-                                            {/* <i className="feather icon-arrow-up text-c-green f-30 m-r-5"/>  */}
-                                            <CountUp start={0} end={stats.total_predictions.count} duration={2} separator="," />
-                                            {/* { stats.total_predictions } */}
-                                        </h3>
-                                    </div>
-
-                                    <div className="col-3 text-right">
-                                        <p className="m-b-0">{stats.total_predictions.progress}%</p>
-                                    </div>
-                                </div>
-                                <div className="progress m-t-30" style={{ height: '7px' }}>
-                                    <div className="progress-bar progress-c-theme" role="progressbar" style={{ width: `${stats.total_predictions.progress}%` }} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" />
-                                </div>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col md={6} xl={3}>
-                        <Card>
-                            <Card.Body>
-                                <h6 className='mb-4'>Total Bully Predictions</h6>
-                                <div className="row d-flex align-items-center">
-                                    <div className="col-9">
-                                        <h3 className="f-w-300 d-flex align-items-center m-b-0">
-                                            {/* <i className="feather icon-arrow-down text-c-red f-30 m-r-5" />  */}
-                                            <CountUp start={0} end={stats.total_bully_predictions.count} duration={2} separator="," />
-                                            {/* { stats.total_bully_predictions } */}
-                                        </h3>
-                                    </div>
-
-                                    <div className="col-3 text-right">
-                                        <p className="m-b-0">{stats.total_bully_predictions.progress}%</p>
-                                    </div>
-                                </div>
-                                <div className="progress m-t-30" style={{ height: '7px' }}>
-                                    <div className="progress-bar progress-c-theme3" role="progressbar" style={{ width: `${stats.total_bully_predictions.progress}%` }} aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" />
-                                </div>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col md={6} xl={3}>
-                        <Card>
-                            <Card.Body>
-                                <h6 className='mb-4'>Total Users</h6>
-                                <div className="row d-flex align-items-center">
-                                    <div className="col-9">
-                                        <h3 className="f-w-300 d-flex align-items-center m-b-0">
-                                            {/* <i className="feather icon-arrow-up text-c-green f-30 m-r-5" />  */}
-                                            <CountUp start={0} end={stats.total_users.count} duration={2} separator="," />
-                                            {/* { stats.total_users } */}
-                                        </h3>
-                                    </div>
-
-                                    <div className="col-3 text-right">
-                                        <p className="m-b-0">{stats.total_users.progress}%</p>
-                                    </div>
-                                </div>
-                                <div className="progress m-t-30" style={{ height: '7px' }}>
-                                    <div className="progress-bar progress-c-theme" role="progressbar" style={{ width: `${stats.total_users.progress}%` }} aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" />
-                                </div>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col md={6} xl={3}>
-                        <Card>
-                            <Card.Body>
-                                <h6 className='mb-4'>Total Reports</h6>
-                                <div className="row d-flex align-items-center">
-                                    <div className="col-9">
-                                        <h3 className="f-w-300 d-flex align-items-center m-b-0">
-                                            {/* <i className="feather icon-arrow-up text-c-green f-30 m-r-5" />  */}
-                                            <CountUp start={0} end={stats.total_reports.count} duration={2} separator="," />
-                                            {/* { stats.total_reports } */}
-                                        </h3>
-                                    </div>
-
-                                    <div className="col-3 text-right">
-                                        <p className="m-b-0">{stats.total_reports.progress}%</p>
-                                    </div>
-                                </div>
-                                <div className="progress m-t-30" style={{ height: '7px' }}>
-                                    <div className="progress-bar progress-c-theme3" role="progressbar" style={{ width: `${stats.total_reports.progress}%` }} aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" />
-                                </div>
-                            </Card.Body>
-                        </Card>
-                    </Col>
+                    <StatsContainer 
+                        title={"Total Predictions"} 
+                        count={stats.total_predictions.count} 
+                        progress={stats.total_predictions.progress} 
+                    />
+                    <StatsContainer 
+                        title={"Total Bully Predictions"} 
+                        count={stats.total_bully_predictions.count} 
+                        progress={stats.total_bully_predictions.progress} 
+                        progressBarTheme="progress-c-theme3" 
+                    />
+                    <StatsContainer 
+                        title={"Total Users"} 
+                        count={stats.total_users.count} 
+                        progress={stats.total_users.progress} 
+                    />
+                    <StatsContainer 
+                        title={"Total Reports"} 
+                        count={stats.total_reports.count} 
+                        progress={stats.total_reports.progress} 
+                        progressBarTheme="progress-c-theme3" 
+                    />
 
                     <Col md={12}>
                         <Card>
@@ -287,7 +217,6 @@ const Dashboard = () => {
                                                             {user.totalApprovedTweets}
                                                         </h6>
                                                     </td>
-                                                    {/* <td><a href={DEMO.BLANK_LINK} className="label theme-bg2 text-white f-12">Reject</a><a href={DEMO.BLANK_LINK} className="label theme-bg text-white f-12">Approve</a></td> */}
                                                 </tr>
                                             )}
                                     </tbody>
