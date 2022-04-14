@@ -92,6 +92,10 @@ strong {
 .theme-bg2 {
     background: $theme-color2;
 }
+
+.theme-bg3 {
+    background: $theme-color3;
+}
 /* ==========  card css start  =========== */
 
 .anim-rotate {
@@ -881,3 +885,9 @@ p.text-muted {
     -webkit-font-smoothing: antialiased;
 }
 /* material icon for material datetime picker */
+
+
+.tab-content{
+    height: 525px;
+    overflow-y: scroll;
+}

@@ -9,6 +9,8 @@ const Dashboard = React.lazy(() => import('./pages/Dashboard/Dashboard'));
 const Admins = React.lazy(() => import('./pages/Admins/Admins'));
 const Users = React.lazy(() => import('./pages/Users/Users'));
 const Models = React.lazy(() => import('./pages/Models/Models'));
+const ReportedTweets = React.lazy(() => import('./pages/TweetReports/ReportedTweets'));
+const RetrainingModel = React.lazy(() => import('./pages/TweetReports/RetrainingModel'));
 
 
 const UIBasicButton = React.lazy(() => import('./Demo/UIElements/Basic/Button'));
@@ -35,6 +37,8 @@ const routes = [
     { path: '/admins', exact: true, name: 'Admins', component: Admins, isPrivate: true },
     { path: '/users', exact: true, name: 'Users', component: Users, isPrivate: true },
     { path: '/models', exact: true, name: 'Models', component: Models, isPrivate: true },
+    { path: '/reported-tweets', exact: true, name: 'Reported Tweets', component: ReportedTweets, isPrivate: true },
+    { path: '/retraining-model', exact: true, name: 'Retraining Model', component: RetrainingModel, isPrivate: true },
 
 
     

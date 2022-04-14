@@ -54,9 +54,8 @@ const Admins = () => {
         adminsValue && adminsValue.docs.forEach((doc, index) => {
             const data = doc.data();
             newAdmins.push({ id: index + 1, name: data.name, email: data.email, role: data.role });
-
-            setAdmins(newAdmins);
         });
+        setAdmins(newAdmins);
     }, [adminsValue]);
 
     const afterSearch = (newResult) => {
