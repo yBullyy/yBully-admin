@@ -9,6 +9,10 @@ export const getDailyScans = () => {
     return collection(firestore, 'dailyScans');
 }
 
+export const getDailyReports = () => {
+    return collection(firestore, 'dailyReports');
+}
+
 export const getUsers = () => {
     return collection(firestore, 'users');
 }

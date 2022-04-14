@@ -3,25 +3,7 @@ import NVD3Chart from 'react-nvd3';
 import { getFormattedDate } from '../../../utils/dateUtil';
 
 
-const LineChart = (props) => {
-    const getData = () => {
-        var data = [];
-        props.data.forEach(e => {
-            let splitDate = e.date.split('-');            
-            data.push({
-                'x': new Date(splitDate[2], splitDate[1] - 1, splitDate[0]),
-                'y': e.bullyCount + e.noBullyCount
-            });            
-        });
-        return [{
-                values: data,
-                key: 'Daily Scans',
-                color: '#A389D4',
-                // color: '#1de9b6',
-                area: true
-            }];
-    }
-
+const LineChart = ({ getData, xAxisLabel, yAxisLabel }) => {
     const data = getData();
     return (
         <div>
@@ -29,10 +11,10 @@ const LineChart = (props) => {
                 React.createElement(NVD3Chart, {
                     xAxis: {
                         tickFormat: (d) => { return getFormattedDate(d); },
-                        axisLabel: 'Date'
+                        axisLabel: xAxisLabel
                     },
                     yAxis: {
-                        axisLabel: 'Count',
+                        axisLabel: yAxisLabel,
                         tickFormat: (d) => { return d; }
                     },
                     type: 'lineChart',

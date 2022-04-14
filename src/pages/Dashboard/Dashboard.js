@@ -10,7 +10,7 @@ import avatar1 from '../../assets/images/user/avatar-1.jpg';
 import LineChart from '../../components/Charts/Nvd3Chart/LineChart';
 import PieBasicChart from '../../components/Charts/Nvd3Chart/PieBasicChart';
 import MultiBarChart from '../../components/Charts/Nvd3Chart/MultiBarChart';
-import { getDailyScans, getStats, getTop5Users, getUsers } from '../../helpers/firestore';
+import { getDailyReports, getDailyScans, getStats, getTop5Users, getUsers } from '../../helpers/firestore';
 
 
 const Dashboard = () => {
@@ -18,9 +18,11 @@ const Dashboard = () => {
     const [dailyScansValue, dailyScansLoading] = useCollection(getDailyScans(), { snapshotListenOptions: { includeMetadataChanges: true } });
     const [usersValue, usersLoading] = useCollection(getUsers(), { snapshotListenOptions: { includeMetadataChanges: true } });
     const [top5UsersValue, top5UsersLoading] = useCollection(getTop5Users(), { snapshotListenOptions: { includeMetadataChanges: true } });
+    const [dailyReportsValue, dailyReportsLoading] = useCollection(getDailyReports(), { snapshotListenOptions: { includeMetadataChanges: true } });
 
     const [stats, setStats] = useState({});
     const [dailyScansData, setDailyScansData] = useState([]);
+    const [dailyreportsData, setDailyreportsData] = useState([]);
     const [users, setUsers] = useState([]);
     const [top5Users, setTop5Users] = useState([]);
 
@@ -39,6 +41,12 @@ const Dashboard = () => {
             newDailyScansData.push(data);
         });
 
+        let newDailyreportsData = [];
+        dailyReportsValue && dailyReportsValue.docs.forEach(doc => {
+            let data = doc.data();
+            newDailyreportsData.push(data);
+        });
+
         let newUsers = [];
         usersValue && usersValue.docs.forEach(doc => {
             let data = doc.data();
@@ -53,13 +61,48 @@ const Dashboard = () => {
 
         setStats(newStats);
         setDailyScansData(newDailyScansData);
+        setDailyreportsData(newDailyreportsData);
         setUsers(newUsers);
         setTop5Users(newTop5Users);
         
-    }, [statsValue, dailyScansValue, usersValue, top5UsersValue]);
+    }, [statsValue, dailyScansValue, usersValue, top5UsersValue, dailyReportsValue]);
 
     const isLoading = () => {
-        return statsLoading || dailyScansLoading || usersLoading || top5UsersLoading || Object.keys(stats).length === 0;
+        return statsLoading || dailyScansLoading || dailyReportsLoading || usersLoading || top5UsersLoading || Object.keys(stats).length === 0;
+    }
+
+    const getDailyScansChartData = () => {
+        var data = [];
+        dailyScansData.forEach(e => {
+            let splitDate = e.date.split('-');            
+            data.push({
+                'x': new Date(splitDate[2], splitDate[1] - 1, splitDate[0]),
+                'y': e.bullyCount + e.noBullyCount
+            });            
+        });
+        return [{
+                values: data,
+                key: 'Daily Scans',
+                color: '#A389D4',
+                area: true
+            }];
+    }
+
+    const getDailyReportsChartData = () => {
+        var data = [];
+        dailyreportsData.forEach(e => {
+            let splitDate = e.date.split('-');
+            data.push({
+                'x': new Date(splitDate[2], splitDate[1] - 1, splitDate[0]),
+                'y': e.reportCount
+            });
+        });
+        return [{
+                values: data,
+                key: 'Daily Reports',
+                color: '#1de9b6',
+                area: true
+            }];
     }
 
     return (
@@ -169,7 +212,7 @@ const Dashboard = () => {
                                 <Card.Title as="h5">Daily Scans</Card.Title>
                             </Card.Header>
                             <Card.Body>
-                                <LineChart data={dailyScansData} />
+                                <LineChart getData={getDailyScansChartData} xAxisLabel="Date" yAxisLabel="Count" />
                             </Card.Body>
                         </Card>
                     </Col>
@@ -181,6 +224,17 @@ const Dashboard = () => {
                             </Card.Header>
                             <Card.Body>
                                 <MultiBarChart data={dailyScansData} />
+                            </Card.Body>
+                        </Card>
+                    </Col>
+
+                    <Col sm={12}>
+                        <Card>
+                            <Card.Header>
+                                <Card.Title as="h5">Daily Reports</Card.Title>
+                            </Card.Header>
+                            <Card.Body>
+                                <LineChart getData={getDailyReportsChartData} xAxisLabel="Date" yAxisLabel="Count" />
                             </Card.Body>
                         </Card>
                     </Col>
