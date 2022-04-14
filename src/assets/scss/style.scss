@@ -21,7 +21,7 @@ File: style.css
 =================================================================================
 =================================================================================== */
 @import "~bootstrap/dist/css/bootstrap";
-// General theme contents
+// // General theme contents
 @import "partials/variables";
 @import "partials/general";
 @import "partials/generic";
@@ -47,7 +47,6 @@ File: style.css
 @import "partials/theme-elements/modal";
 
 // Other
-@import "partials/other/chat";
 @import "partials/other/prism";
 @import "partials/other/switches";
 
