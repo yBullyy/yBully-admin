@@ -88,7 +88,7 @@ const ReportedTweets = () => {
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody style={{ textAlign: 'center' }} >
                         {
                             data.map((item, index) => {
                                 return (

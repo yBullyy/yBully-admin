@@ -6,11 +6,11 @@ export const getStats = () => {
 }
 
 export const getDailyScans = () => {
-    return collection(firestore, 'dailyScans');
+    return query(collection(firestore, 'dailyScans'), orderBy('timestamp', 'asc'));
 }
 
 export const getDailyReports = () => {
-    return collection(firestore, 'dailyReports');
+    return query(collection(firestore, 'dailyReports'), orderBy('timestamp', 'asc'));
 }
 
 export const getUsers = () => {
