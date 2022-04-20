@@ -65,7 +65,7 @@ const Users = () => {
                 >
                     <i className="feather icon-edit" />
                 </div>,
-                trustscore: parseInt(data.trustScore * 100),
+                trustscore: `${parseInt(data.trustScore * 100)}%`,
                 email: data.email
             });
             

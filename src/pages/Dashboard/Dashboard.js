@@ -209,7 +209,7 @@ const Dashboard = () => {
                                                     </td>
                                                     <td>
                                                         <h6 className="text-muted">
-                                                            {user.trustScore}%
+                                                            {parseInt(user.trustScore * 100)}%
                                                         </h6>
                                                     </td>
                                                     <td>

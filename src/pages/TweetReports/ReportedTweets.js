@@ -5,18 +5,30 @@ import ReactLoading from 'react-loading';
 import Aux from "../../hoc/_Aux";
 import DEMO from "../../store/constant";
 
-import { useCollection } from "react-firebase-hooks/firestore";
+import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import { batchAddApprovedTweets, batchDeleteReportedTweets, getReportedTweets } from "../../helpers/firestore";
 import { toast } from "react-toastify";
 
 const ReportedTweets = () => {
 
-    const [allReportsValue] = useCollection(getReportedTweets(), { snapshotListenOptions: { includeMetadataChanges: true } });
+    const [allReportsValue] = useCollectionOnce(getReportedTweets());
 
     const [allReports, setAllReports] = useState([]);
     const [approvedReports, setApprovedReports] = useState([]);
     const [rejectedReports, setRejectedReports] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        window.addEventListener('beforeunload', alertUser)
+        return () => {
+            window.removeEventListener('beforeunload', alertUser)
+        }
+    }, []);
+
+    const alertUser = e => {
+        e.preventDefault()
+        e.returnValue = ''
+    }
 
     useEffect(() => {
         let newAllReports = [];
