@@ -19,16 +19,18 @@ const ReportedTweets = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        const alertUser = e => {
+            if(approvedReports.length > 0 || rejectedReports.length > 0) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        }
         window.addEventListener('beforeunload', alertUser)
         return () => {
             window.removeEventListener('beforeunload', alertUser)
         }
-    }, []);
+    }, [approvedReports.length, rejectedReports.length]);
 
-    const alertUser = e => {
-        e.preventDefault()
-        e.returnValue = ''
-    }
 
     useEffect(() => {
         let newAllReports = [];
@@ -52,14 +54,15 @@ const ReportedTweets = () => {
         setData(newData);
         setRejectedReports([...rejectedReports, ...rejectedTweet]);
     };
-    const handleConfirmChanges = () => {
+    const handleConfirmChanges = async () => {
         setIsLoading(true);
         try {
             if (approvedReports.length > 0) {
+                console.log("Approved Reports: ", approvedReports);
                 const approvedTweetIds = approvedReports.map(approvedTweet => approvedTweet.tweetId);
                 console.log(approvedTweetIds);
                 // delete approved tweets from all reports
-                batchDeleteReportedTweets(approvedTweetIds);
+                await batchDeleteReportedTweets(approvedTweetIds);
                 // add approved reports to approvedTweets collection
                 batchAddApprovedTweets(approvedReports);
                 setApprovedReports([]);
