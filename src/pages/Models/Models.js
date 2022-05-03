@@ -1,58 +1,113 @@
-import React from "react";
-import { Card } from 'react-bootstrap';
+import React, { useEffect, useState } from "react";
+import { Card, Button } from 'react-bootstrap';
+import { useCollection } from "react-firebase-hooks/firestore";
+
+import { activateModel, deactivateCurrentlyActiveModel, getModelDownloadUrl, getModels } from "../../helpers/firestore";
 import Aux from "../../hoc/_Aux";
 
 const Models = () => {
+
+    const [allModelsValue] = useCollection(getModels(), { snapshotListenOptions: { includeMetadataChanges: true } });
+    const [models, setModels] = useState([]);
+
+    useEffect(() => {
+        let newModels = [];
+
+        allModelsValue && allModelsValue.docs.forEach(doc => {
+            newModels.push(doc.data());
+        });
+        setModels(newModels);
+    }, [allModelsValue]);
+
+    const downloadModelHandler = (model_location) => {
+        getModelDownloadUrl(model_location)
+        .then(url => {
+            // console.log(url);
+            openInNewTab(url);
+        });
+    }
+
+    const openInNewTab = (url) => {
+        const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+        if (newWindow) {
+            newWindow.opener = null;
+        }
+    }
+
+    const activateModelHandler = (model_version) => {
+        deactivateCurrentlyActiveModel();
+        activateModel(model_version);
+    }
+
     return (
         <Aux>
-            <Card>
-                <Card.Body>
-                    <Card.Title>Model 1</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">Accuracy: 90%</Card.Subtitle>
-                    <Card.Text>
-                        Trained on: 25 / 10 / 2022
-                        <br />
-                        <i className="fa fa-circle text-c-green f-10 m-r-15"/> Active
-                    </Card.Text>
-                    {/* <Card.Link href="#">Card Link</Card.Link> */}
-                    {/* <Card.Link href="#">Another Link</Card.Link> */}
-                </Card.Body>
-            </Card>
-            {/* <Card>
-                <Card.Body>
-                    <Card.Title>Model 2</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">Accuracy: 94%</Card.Subtitle>
-                    <Card.Text>
-                        <p>Trained on: 23 / 10 / 2022</p>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} >
-                            <div>
-                                <i className="fa fa-circle text-c-red f-10 m-r-15"/> Inactive
-                            </div>                        
-                            <Button variant="primary" size="sm" className="m-l-10" >
-                                Activate
-                            </Button>
-                        </div>
-                    </Card.Text>
-                </Card.Body>
-            </Card>
-            <Card>
-                <Card.Body>
-                    <Card.Title>Model 3</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">Accuracy: 94%</Card.Subtitle>
-                    <Card.Text>
-                        <p>Trained on: 23 / 10 / 2022</p>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} >
-                            <div>
-                                <i className="fa fa-circle text-c-red f-10 m-r-15"/> Inactive
-                            </div>                        
-                            <Button variant="primary" size="sm" className="m-l-10" >
-                                Activate
-                            </Button>
-                        </div>
-                    </Card.Text>
-                </Card.Body>
-            </Card> */}
-            
+            {
+                models.map((model, index) => {
+                    let activeIndicatorColor = model.isActive ? "green" : "red";
+                    let statusIndicatorColor = model.status.toLowerCase() === "trained" ? "green" : "yellow";
+                    let boxShadow = model.isActive ? "0 1px 5px 0 rgb(84 231 118)" : "0 1px 20px 0 rgb(69 90 100 / 8%)"
+                    let blinkClassName = model.status.toLowerCase() === "trained" ? "" : "blink";
+
+                    return (
+                        <Card key={index} style={{ boxShadow: boxShadow }} >
+                            <Card.Body>
+                                <div>
+                                    <div className="m-b-10" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} >
+                                        <h5 style={{ color: "#888", fontWeight: "bold" }} >{model.name != null ? model.name.split('_').join(' ') : '-'}</h5>
+                                        <div><i className={`fa fa-circle text-c-${activeIndicatorColor} f-10 m-l-5`} /> {model.isActive ? 'Active' : 'Inactive'}</div>
+                                    </div>
+                                    
+                                    <div className="m-b-5" >
+                                        <b>Loss: </b>
+                                        <i>{model.history != null ? model.history.loss[model.history.loss.length - 1].toFixed(5) : '-'}</i>
+                                        <br />
+                                    </div>
+                                    
+                                    <div className="m-b-5" >
+                                        <b>Val Loss: </b>
+                                        <i>{model.history != null ? model.history.val_loss[model.history.val_loss.length - 1].toFixed(5) : '-'}</i>
+                                        <br />
+                                    </div>
+
+                                    <div className="m-b-5" >
+                                        <b>Trained on: </b>
+                                        <i>{model.date != null ? new Date(model.date.seconds * 1000).toUTCString() : '-'}</i>
+                                        <br />
+                                    </div>
+
+                                    <div className="m-b-5" >
+                                        <b>Version: </b>
+                                        <i>{model.version}</i> 
+                                        <br />
+                                    </div>
+
+                                    <div
+                                    >
+                                        <b>Status: </b>
+                                        <i className={`fa fa-circle text-c-${statusIndicatorColor} f-10 m-l-5 m-r-5 ${blinkClassName}`} />
+                                        <i className={blinkClassName} >{model.status}</i>
+                                    </div>
+
+                                    {
+                                        !model.isActive && model.status.toLowerCase() === "trained" &&
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} >
+                                                <div></div>
+                                                <div>
+                                                    <Button variant="primary" size="sm" className="m-l-10" onClick={() => activateModelHandler(model.version)} >
+                                                        Activate
+                                                    </Button>
+                                                    <Button variant="outline-dark" size="sm" className="m-l-10" onClick={() => downloadModelHandler(model.location)} >
+                                                        Download <i className="fa fa-download" />
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                    }
+                                </div>
+                            </Card.Body>
+                        </Card>
+                    )
+                })
+            }
         </Aux>
     );
 }
