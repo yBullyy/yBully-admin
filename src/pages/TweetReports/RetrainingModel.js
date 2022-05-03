@@ -75,7 +75,6 @@ const RetrainingModel = () => {
 
             // clear approved tweets collection
             const approvedTweetIds = approvedReports.map(approvedTweet => approvedTweet.tweetId);
-            batchDeleteApprovedTweets(approvedTweetIds);
 
             let retrainingData = approvedReports.map(approvedTweet => {
                 return {
@@ -105,6 +104,8 @@ const RetrainingModel = () => {
             });
             const data = await response.json();
             console.log(data);
+            
+            batchDeleteApprovedTweets(approvedTweetIds);
             toast.success(`${data.message} for version ${data.model_version}`);
         } catch (error) {
             toast.error('Some error occured !!');
