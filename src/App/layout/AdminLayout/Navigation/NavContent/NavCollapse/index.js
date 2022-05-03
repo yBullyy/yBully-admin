@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import Aux from "../../../../../../hoc/_Aux";
-import DEMO from "../../../../../../store/constant";
+import CONSTANTS from "../../../../../../store/constant";
 import * as actionTypes from "../../../../../../store/actions";
 import NavIcon from './../NavIcon';
 import NavBadge from './../NavBadge';
@@ -69,7 +69,7 @@ class NavCollapse extends Component {
 
         const subContent = (
             <Aux>
-                <a href={DEMO.BLANK_LINK} className={navLinkClass.join(' ')} onClick={() => this.props.onCollapseToggle(this.props.collapse.id, this.props.type)}>
+                <a href={CONSTANTS.BLANK_LINK} className={navLinkClass.join(' ')} onClick={() => this.props.onCollapseToggle(this.props.collapse.id, this.props.type)}>
                     <NavIcon items={this.props.collapse} />
                     {itemTitle}
                     <NavBadge layout={this.props.layout} items={this.props.collapse} />

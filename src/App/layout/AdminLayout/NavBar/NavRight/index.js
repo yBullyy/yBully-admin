@@ -3,7 +3,7 @@ import {Dropdown} from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
 import Aux from "../../../../../hoc/_Aux";
-import DEMO from "../../../../../store/constant";
+import CONSTANTS from "../../../../../store/constant";
 
 import Avatar1 from '../../../../../assets/images/user/avatar-1.jpg';
 // import Avatar2 from '../../../../../assets/images/user/avatar-2.jpg';
@@ -54,8 +54,8 @@ const NavRight = (props) => {
                                 <div className="noti-head">
                                     <h6 className="d-inline-block m-b-0">Notifications</h6>
                                     <div className="float-right">
-                                        <a href={DEMO.BLANK_LINK} className="m-r-10">mark as read</a>
-                                        <a href={DEMO.BLANK_LINK}>clear all</a>
+                                        <a href={CONSTANTS.BLANK_LINK} className="m-r-10">mark as read</a>
+                                        <a href={CONSTANTS.BLANK_LINK}>clear all</a>
                                     </div>
                                 </div>
                                 <ul className="noti-body">
@@ -97,7 +97,7 @@ const NavRight = (props) => {
                                     </li>
                                 </ul>
                                 <div className="noti-footer">
-                                    <a href={DEMO.BLANK_LINK}>show all</a>
+                                    <a href={CONSTANTS.BLANK_LINK}>show all</a>
                                 </div>
                             </Dropdown.Menu>
                         </Dropdown>
@@ -116,8 +116,8 @@ const NavRight = (props) => {
                                     </div>
                                 </div>
                                 <ul className="pro-body">
-                                    <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-user"/> Profile</a></li>
-                                    <li onClick={handleLogout} ><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-log-out"/> Logout</a></li>
+                                    <li><a href={CONSTANTS.BLANK_LINK} className="dropdown-item"><i className="feather icon-user"/> Profile</a></li>
+                                    <li onClick={handleLogout} ><a href={CONSTANTS.BLANK_LINK} className="dropdown-item"><i className="feather icon-log-out"/> Logout</a></li>
                                 </ul>
                             </Dropdown.Menu>
                         </Dropdown>

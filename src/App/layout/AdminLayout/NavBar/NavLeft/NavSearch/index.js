@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import windowSize from 'react-window-size';
 
 import Aux from "../../../../../../hoc/_Aux";
-import DEMO from "../../../../../../store/constant";
+import CONSTANTS from "../../../../../../store/constant";
 
 class NavSearch extends Component {
     state = {
@@ -54,7 +54,7 @@ class NavSearch extends Component {
                 <div id="main-search" className={searchClass.join(' ')}>
                     <div className="input-group">
                         <input type="text" id="m-search" className="form-control" placeholder="Search . . ." style={{width: this.state.searchString}}/>
-                        <a href={DEMO.BLANK_LINK} className="input-group-append search-close" onClick={this.searchOffHandler}>
+                        <a href={CONSTANTS.BLANK_LINK} className="input-group-append search-close" onClick={this.searchOffHandler}>
                             <i className="feather icon-x input-group-text"/>
                         </a>
                         <span className="input-group-append search-btn btn btn-primary" onClick={this.searchOnHandler}>

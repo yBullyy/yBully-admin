@@ -3,7 +3,7 @@ import {Dropdown, Card, Collapse} from 'react-bootstrap';
 import windowSize from 'react-window-size';
 
 import Aux from "../../hoc/_Aux";
-import DEMO from "../../store/constant";
+import CONSTANTS from "../../store/constant";
 
 class MainCard extends Component {
     state = {
@@ -40,19 +40,19 @@ class MainCard extends Component {
                         <Dropdown.Menu as='ul' className="list-unstyled card-option">
                             <Dropdown.Item as='li' className="dropdown-item" onClick={() => {this.setState(prevState => {return {fullCard: !prevState.fullCard}})}}>
                                 <i className={this.state.fullCard ? 'feather icon-minimize' : 'feather icon-maximize'}/>
-                                <a href={DEMO.BLANK_LINK}> {this.state.fullCard ? 'Restore' : 'Maximize'} </a>
+                                <a href={CONSTANTS.BLANK_LINK}> {this.state.fullCard ? 'Restore' : 'Maximize'} </a>
                             </Dropdown.Item>
                             <Dropdown.Item as='li' className="dropdown-item" onClick={() => {this.setState(prevState => {return {collapseCard: !prevState.collapseCard}})}}>
                                 <i className={this.state.collapseCard ? 'feather icon-plus' : 'feather icon-minus'}/>
-                                <a href={DEMO.BLANK_LINK}> {this.state.collapseCard ? 'Expand' : 'Collapse'} </a>
+                                <a href={CONSTANTS.BLANK_LINK}> {this.state.collapseCard ? 'Expand' : 'Collapse'} </a>
                             </Dropdown.Item>
                             <Dropdown.Item as='li' className="dropdown-item" onClick={this.cardReloadHandler}>
                                 <i className='feather icon-refresh-cw'/>
-                                <a href={DEMO.BLANK_LINK}> Reload </a>
+                                <a href={CONSTANTS.BLANK_LINK}> Reload </a>
                             </Dropdown.Item>
                             <Dropdown.Item as='li' className="dropdown-item" onClick={this.cardRemoveHandler}>
                                 <i className='feather icon-trash'/>
-                                <a href={DEMO.BLANK_LINK}> Remove </a>
+                                <a href={CONSTANTS.BLANK_LINK}> Remove </a>
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>

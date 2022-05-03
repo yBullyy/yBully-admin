@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 
 import config from '../../../../config';
 import navigation from '../../../../menu-items';
-import DEMO from "../../../../store/constant";
+import CONSTANTS from "../../../../store/constant";
 import Aux from "../../../../hoc/_Aux";
 
 class Breadcrumb extends Component {
@@ -52,7 +52,7 @@ class Breadcrumb extends Component {
         if (this.state.main && this.state.main.type === 'collapse') {
             main = (
                 <li className="breadcrumb-item">
-                    <a href={DEMO.BLANK_LINK}>{this.state.main.title}</a>
+                    <a href={CONSTANTS.BLANK_LINK}>{this.state.main.title}</a>
                 </li>
             );
         }
@@ -61,7 +61,7 @@ class Breadcrumb extends Component {
             title = this.state.item.title;
             item = (
                 <li className="breadcrumb-item">
-                    <a href={DEMO.BLANK_LINK}>{title}</a>
+                    <a href={CONSTANTS.BLANK_LINK}>{title}</a>
                 </li>
             );
 

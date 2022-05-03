@@ -3,7 +3,7 @@ import { Row, Col, Tabs, Tab, Table, Button } from "react-bootstrap";
 import ReactLoading from 'react-loading';
 
 import Aux from "../../hoc/_Aux";
-import DEMO from "../../store/constant";
+import CONSTANTS from "../../store/constant";
 
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import { batchAddApprovedTweets, batchDeleteReportedTweets, getReportedTweets } from "../../helpers/firestore";
@@ -122,10 +122,10 @@ const ReportedTweets = () => {
                                         </td> */}
                                         <td>
                                             {
-                                                tabName !== "rejected" && <a onClick={() => handleReject(index, data, setData)} href={DEMO.BLANK_LINK} className="label theme-bg2 text-white f-12">Reject</a>
+                                                tabName !== "rejected" && <a onClick={() => handleReject(index, data, setData)} href={CONSTANTS.BLANK_LINK} className="label theme-bg2 text-white f-12">Reject</a>
                                             }
                                             {
-                                                tabName !== "approved" && <a onClick={() => handleApprove(index, data, setData)} href={DEMO.BLANK_LINK} className="label theme-bg text-white f-12">Approve</a>
+                                                tabName !== "approved" && <a onClick={() => handleApprove(index, data, setData)} href={CONSTANTS.BLANK_LINK} className="label theme-bg text-white f-12">Approve</a>
                                             }
                                         </td>
                                     </tr>

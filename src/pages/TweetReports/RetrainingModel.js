@@ -3,10 +3,10 @@ import { Row, Col, Table, Button, Card } from "react-bootstrap";
 import ReactLoading from 'react-loading';
 
 import Aux from "../../hoc/_Aux";
-import DEMO from "../../store/constant";
+import CONSTANTS from "../../store/constant";
 
 import { useCollection } from "react-firebase-hooks/firestore";
-import { batchDeleteApprovedTweets, deleteSingleAprrovedTweet, getApprovedTweets, updateUserStats } from "../../helpers/firestore";
+import { batchDeleteApprovedTweets, deleteSingleAprrovedTweet, getApprovedTweets, getLastModel, updateUserStats } from "../../helpers/firestore";
 import { toast } from "react-toastify";
 
 const RetrainingModel = () => {
@@ -47,9 +47,16 @@ const RetrainingModel = () => {
         }
     }
 
-    const onRetrainClick = () => {
+    const onRetrainClick = async () => {
         setIsLoading(true);
         try {
+            // check if already a model is being trained
+            const lastModel = await getLastModel();
+            if(lastModel.status.toLowerCase() !== "trained") {
+                toast.error('Model is already being trained');
+                return;
+            }
+
             // update stats
             let userTweetMap = {};
             approvedReports.forEach((tweet) => {
@@ -70,8 +77,35 @@ const RetrainingModel = () => {
             const approvedTweetIds = approvedReports.map(approvedTweet => approvedTweet.tweetId);
             batchDeleteApprovedTweets(approvedTweetIds);
 
-            // send data to retraining model
+            let retrainingData = approvedReports.map(approvedTweet => {
+                return {
+                    "text": approvedTweet.tweetText,
+                    "label": approvedTweet.correctLabel === "bully" ? 1 : 0
+                };
+            });
+            console.log(retrainingData);
 
+            // check if atleast 1 elements label is 1
+            if (retrainingData.filter(tweet => tweet.label === 1).length === 0) {
+                toast.error('No tweets with bully label found');
+                return;
+            }
+            // check if atleast 1 elements label is 0
+            if (retrainingData.filter(tweet => tweet.label === 0).length === 0) {
+                toast.error('No tweets with non-bully label found');
+                return;
+            }
+            // send data to retraining model
+            const response = await fetch(`${CONSTANTS.API_URL}/retrain`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 'data': retrainingData })
+            });
+            const data = await response.json();
+            console.log(data);
+            toast.success(`${data.message} for version ${data.model_version}`);
         } catch (error) {
             toast.error('Some error occured !!');
             console.log(error);
@@ -108,7 +142,7 @@ const RetrainingModel = () => {
                                         <td>
                                             <a
                                                 onClick={() => handleReject(index, data, setData)}
-                                                href={DEMO.BLANK_LINK}
+                                                href={CONSTANTS.BLANK_LINK}
                                                 className="label theme-bg3 text-white f-12"
                                             >
                                                 Reject

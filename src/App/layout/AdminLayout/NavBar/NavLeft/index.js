@@ -5,7 +5,7 @@ import windowSize from 'react-window-size';
 
 import NavSearch from './NavSearch';
 import Aux from "../../../../../hoc/_Aux";
-import DEMO from "../../../../../store/constant";
+import CONSTANTS from "../../../../../store/constant";
 import * as actionTypes from "../../../../../store/actions";
 
 class NavLeft extends Component {
@@ -27,7 +27,7 @@ class NavLeft extends Component {
         return (
             <Aux>
                 <ul className="navbar-nav mr-auto">
-                    <li><a href={DEMO.BLANK_LINK} className="full-screen" onClick={this.props.onFullScreen}><i className={iconFullScreen.join(' ')} /></a></li>
+                    <li><a href={CONSTANTS.BLANK_LINK} className="full-screen" onClick={this.props.onFullScreen}><i className={iconFullScreen.join(' ')} /></a></li>
                     <li className={navItemClass.join(' ')}>
                         <Dropdown alignRight={dropdownRightAlign}>
                             <Dropdown.Toggle variant={'link'} id="dropdown-basic">
@@ -35,9 +35,9 @@ class NavLeft extends Component {
                             </Dropdown.Toggle>
                             <ul>
                                 <Dropdown.Menu>
-                                    <li><a className="dropdown-item" href={DEMO.BLANK_LINK}>Action</a></li>
-                                    <li><a className="dropdown-item" href={DEMO.BLANK_LINK}>Another action</a></li>
-                                    <li><a className="dropdown-item" href={DEMO.BLANK_LINK}>Something else here</a></li>
+                                    <li><a className="dropdown-item" href={CONSTANTS.BLANK_LINK}>Action</a></li>
+                                    <li><a className="dropdown-item" href={CONSTANTS.BLANK_LINK}>Another action</a></li>
+                                    <li><a className="dropdown-item" href={CONSTANTS.BLANK_LINK}>Something else here</a></li>
                                 </Dropdown.Menu>
                             </ul>
                         </Dropdown>

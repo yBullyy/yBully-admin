@@ -1,5 +1,6 @@
-const DEMO = {
+const CONSTANTS = {
     BLANK_LINK: "#",
+    API_URL: "http://localhost:8000",
 };
 
-export default DEMO;
+export default CONSTANTS;

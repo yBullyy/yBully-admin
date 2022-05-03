@@ -1,5 +1,32 @@
-import { collection, query, where, orderBy, limit, setDoc, doc, updateDoc, writeBatch, deleteDoc, getDoc } from 'firebase/firestore';
-import { firestore } from './firebase';
+import { collection, query, where, orderBy, limit, setDoc, doc, updateDoc, writeBatch, deleteDoc, getDoc, getDocs } from 'firebase/firestore';
+import { firestore, storage } from './firebase';
+import { getDownloadURL, ref } from 'firebase/storage';
+
+// get download url from firebase storage
+export const getModelDownloadUrl = async (filePath) => {
+    const storageRef = ref(storage, filePath);
+    const url = await getDownloadURL(storageRef);
+    return url;
+}
+
+export const getLastModel = async () => {
+    const modelsSnapshot = await getDocs(collection(firestore, 'models'));
+    const lastModel = modelsSnapshot.docs[modelsSnapshot.docs.length - 1];
+    return lastModel.data();
+}
+
+export const deactivateCurrentlyActiveModel = async () => {
+    const modelsSnapshot = await getDocs(collection(firestore, 'models'));
+    const activeModel = modelsSnapshot.docs.find(model => model.data().isActive === true);
+    if(activeModel)
+        await updateDoc(doc(firestore, 'models', activeModel.data().version.toString()), { isActive: false });
+}
+
+export const activateModel = async (model_version) => {
+    await updateDoc(doc(firestore, 'models', model_version.toString()), { isActive: true });
+}
+
+
 
 export const getStats = () => {
     return collection(firestore, 'stats');
@@ -112,31 +139,7 @@ export const updateUserStats = async (
     }
 }
 
+export const getModels = () => {
+    return collection(firestore, 'models');
+}
 
-
-
-
-// temp functions delete later
-// export const addReportedTweet = async () => {
-//     const randomId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-//     const randomInt = Math.floor(Math.random() * 100) + 1;
-//     await setDoc(doc(firestore, 'reportedTweets', randomId), {
-//         tweetId: randomId,
-//         correctLabel: 'bully',
-//         reportCount: randomInt,
-//         tweetText: 'this is the reported tweet text',
-//         reportedBy: ['userid1']
-//     });
-// }
-
-// export const addApprovedTweet = async () => {
-//     const randomId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-//     const randomInt = Math.floor(Math.random() * 100) + 1;
-//     await setDoc(doc(firestore, 'approvedTweets', randomId), {
-//         tweetId: randomId,
-//         correctLabel: 'bully',
-//         reportCount: randomInt,
-//         tweetText: 'this is the reported tweet text',
-//         reportedBy: ['userid1']
-//     });
-// }
