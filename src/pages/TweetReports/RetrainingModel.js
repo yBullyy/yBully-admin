@@ -47,6 +47,23 @@ const RetrainingModel = () => {
         }
     }
 
+    const updateUserApprovedTweetsStats = () => {
+        let userTweetMap = {};
+        approvedReports.forEach((tweet) => {
+            tweet.reportedBy.forEach((userId) => {
+                if (!userTweetMap[userId]) {
+                    userTweetMap[userId] = [];
+                }
+                userTweetMap[userId].push(tweet);
+            });
+        });
+        Object.keys(userTweetMap).forEach((userId) => {
+            const userTweetsCount = userTweetMap[userId].length;
+            console.log(`${userId} has ${userTweetsCount} tweets`);
+            updateUserStatsHandler(userId, userTweetsCount);
+        });
+    }
+
     const onRetrainClick = async () => {
         setIsLoading(true);
         try {
@@ -57,32 +74,13 @@ const RetrainingModel = () => {
                 return;
             }
 
-            // update stats
-            let userTweetMap = {};
-            approvedReports.forEach((tweet) => {
-                tweet.reportedBy.forEach((userId) => {
-                    if (!userTweetMap[userId]) {
-                        userTweetMap[userId] = [];
-                    }
-                    userTweetMap[userId].push(tweet);
-                });
-            });
-            Object.keys(userTweetMap).forEach((userId) => {
-                const userTweetsCount = userTweetMap[userId].length;
-                console.log(`${userId} has ${userTweetsCount} tweets`);
-                updateUserStatsHandler(userId, userTweetsCount);
-            });
-
-            // clear approved tweets collection
-            const approvedTweetIds = approvedReports.map(approvedTweet => approvedTweet.tweetId);
-
+            // generate retraining data
             let retrainingData = approvedReports.map(approvedTweet => {
                 return {
                     "text": approvedTweet.tweetText,
                     "label": approvedTweet.correctLabel === "bully" ? 1 : 0
                 };
             });
-            console.log(retrainingData);
 
             // check if atleast 1 elements label is 1
             if (retrainingData.filter(tweet => tweet.label === 1).length === 0) {
@@ -94,7 +92,8 @@ const RetrainingModel = () => {
                 toast.error('No tweets with non-bully label found');
                 return;
             }
-            // send data to retraining model
+
+            // send data for retraining
             const response = await fetch(`${CONSTANTS.API_URL}/retrain`, {
                 method: 'POST',
                 headers: {
@@ -105,7 +104,12 @@ const RetrainingModel = () => {
             const data = await response.json();
             console.log(data);
             
+            // clear approved tweets collection
+            const approvedTweetIds = approvedReports.map(approvedTweet => approvedTweet.tweetId);
             batchDeleteApprovedTweets(approvedTweetIds);
+            // update user stats
+            updateUserApprovedTweetsStats();
+            
             toast.success(`${data.message} for version ${data.model_version}`);
         } catch (error) {
             toast.error('Some error occured !!');
