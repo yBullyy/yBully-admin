@@ -44,15 +44,13 @@ const Models = () => {
             [id]: true
         }));
         try {
-            const download_url = await getModelDownloadUrl(model_location);
-            console.log(download_url);
             const response = await fetch(`${CONSTANTS.WEBSOCKET_URL}/update`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    download_url: download_url,
+                    download_url: model_location,
                     model_version: model_version
                 })    
             });
