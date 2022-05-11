@@ -99,7 +99,7 @@ const RetrainingModel = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ 'data': retrainingData })
+                body: JSON.stringify({ 'data': retrainingData, 'epoch': 1 })
             });
             const data = await response.json();
             console.log(data);
