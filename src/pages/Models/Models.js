@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Card, Button } from 'react-bootstrap';
 import { useCollection } from "react-firebase-hooks/firestore";
+import { toast } from "react-toastify";
+import ReactLoading from 'react-loading';
 
-import { activateModel, deactivateCurrentlyActiveModel, getModelDownloadUrl, getModels } from "../../helpers/firestore";
+import { getModelDownloadUrl, getModels } from "../../helpers/firestore";
 import Aux from "../../hoc/_Aux";
+import CONSTANTS from "../../store/constant";
 
 const Models = () => {
 
     const [allModelsValue] = useCollection(getModels(), { snapshotListenOptions: { includeMetadataChanges: true } });
     const [models, setModels] = useState([]);
+    const [activateModelLoadingIds, setActivateModelLoadingIds] = useState({});
 
     useEffect(() => {
         let newModels = [];
@@ -22,7 +26,6 @@ const Models = () => {
     const downloadModelHandler = (model_location) => {
         getModelDownloadUrl(model_location)
         .then(url => {
-            // console.log(url);
             openInNewTab(url);
         });
     }
@@ -34,9 +37,36 @@ const Models = () => {
         }
     }
 
-    const activateModelHandler = (model_version) => {
-        deactivateCurrentlyActiveModel();
-        activateModel(model_version);
+    const activateModelHandler = async (e, model_version, model_location) => {
+        const { id } = e.target;
+        setActivateModelLoadingIds(ids => ({
+            ...ids,
+            [id]: true
+        }));
+        try {
+            const download_url = await getModelDownloadUrl(model_location);
+            console.log(download_url);
+            const response = await fetch(`${CONSTANTS.WEBSOCKET_URL}/update`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    download_url: download_url,
+                    model_version: model_version
+                })    
+            });
+            const data = await response.json();
+            toast.success(data.message);
+            console.log(data);
+        } catch (error) {
+            console.error(error);
+            toast.error(error.message);
+        }
+        setActivateModelLoadingIds(ids => ({
+            ...ids,
+            [id]: false
+        }));
     }
 
     return (
@@ -93,9 +123,16 @@ const Models = () => {
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} >
                                                 <div></div>
                                                 <div>
-                                                    <Button variant="primary" size="sm" className="m-l-10" onClick={() => activateModelHandler(model.version)} >
-                                                        Activate
+                                                    <Button variant="primary" size="sm" className="m-l-10" id={index} onClick={(e) => activateModelHandler(e, model.version, model.location)} >
+                                                        {
+                                                            activateModelLoadingIds[index]
+                                                            ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
+                                                                <ReactLoading type="spinningBubbles" color="#fff" height={20} width={20} />
+                                                            </div>
+                                                            : "Activate"
+                                                        }
                                                     </Button>
+                                                    
                                                     <Button variant="outline-dark" size="sm" className="m-l-10" onClick={() => downloadModelHandler(model.location)} >
                                                         Download <i className="fa fa-download" />
                                                     </Button>
