@@ -4,7 +4,7 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import { toast } from "react-toastify";
 import ReactLoading from 'react-loading';
 
-import { getModelDownloadUrl, getModels } from "../../helpers/firestore";
+import { getModels } from "../../helpers/firestore";
 import Aux from "../../hoc/_Aux";
 import CONSTANTS from "../../store/constant";
 
@@ -24,10 +24,7 @@ const Models = () => {
     }, [allModelsValue]);
 
     const downloadModelHandler = (model_location) => {
-        getModelDownloadUrl(model_location)
-        .then(url => {
-            openInNewTab(url);
-        });
+        openInNewTab(model_location);
     }
 
     const openInNewTab = (url) => {
